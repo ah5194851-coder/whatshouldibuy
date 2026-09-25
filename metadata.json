@@ -1,0 +1,6 @@
+{
+  "name": "What Should I Buy?",
+  "description": "Find the right product for your needs and budget. Consumer product research, side-by-side comparison, finder tool, and buying guides.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
