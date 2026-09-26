@@ -18,7 +18,8 @@ export type ViewState =
   | { type: 'search'; query: string }
   | { type: 'admin' }
   | { type: 'legal'; page: 'about' | 'contact' | 'privacy' | 'terms' | 'affiliate' | 'cookies' }
-  | { type: 'sitemap' };
+  | { type: 'sitemap' }
+  | { type: '404' };
 
 interface AppContextType {
   products: Product[];
@@ -54,18 +55,23 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode; initialPath?: string }> = ({
+  children,
+  initialPath,
+}) => {
   // Products storage
   const [products, setProducts] = useState<Product[]>(() => {
     try {
-      const saved = localStorage.getItem('wsib_products_v1');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          return parsed.map((p: Product) => ({
-            ...p,
-            image: resolveImageSrc(p.image),
-          }));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('wsib_products_v1');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            return parsed.map((p: Product) => ({
+              ...p,
+              image: resolveImageSrc(p.image),
+            }));
+          }
         }
       }
     } catch {
@@ -77,14 +83,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Categories storage
   const [categories, setCategories] = useState<Category[]>(() => {
     try {
-      const saved = localStorage.getItem('wsib_categories_v1');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          return parsed.map((c: Category) => ({
-            ...c,
-            image: resolveImageSrc(c.image),
-          }));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('wsib_categories_v1');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed)) {
+            return parsed.map((c: Category) => ({
+              ...c,
+              image: resolveImageSrc(c.image),
+            }));
+          }
         }
       }
     } catch {
@@ -96,8 +104,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Guides storage
   const [guides, setGuides] = useState<BuyingGuide[]>(() => {
     try {
-      const saved = localStorage.getItem('wsib_guides_v1');
-      if (saved) return JSON.parse(saved);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('wsib_guides_v1');
+        if (saved) return JSON.parse(saved);
+      }
     } catch {
       // fallback
     }
@@ -107,9 +117,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Currency
   const [currency, setCurrencyState] = useState<CurrencyCode>(() => {
     try {
-      const saved = localStorage.getItem('wsib_currency');
-      if (saved && ['USD', 'GBP', 'EUR', 'CAD', 'AUD'].includes(saved)) {
-        return saved as CurrencyCode;
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('wsib_currency');
+        if (saved && ['USD', 'GBP', 'EUR', 'CAD', 'AUD'].includes(saved)) {
+          return saved as CurrencyCode;
+        }
       }
     } catch {
       // fallback
@@ -120,7 +132,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const setCurrency = (curr: CurrencyCode) => {
     setCurrencyState(curr);
     try {
-      localStorage.setItem('wsib_currency', curr);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('wsib_currency', curr);
+      }
     } catch {
       // ignore
     }
@@ -129,8 +143,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Compare list
   const [compareList, setCompareList] = useState<string[]>(() => {
     try {
-      const saved = localStorage.getItem('wsib_compare_list');
-      if (saved) return JSON.parse(saved);
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('wsib_compare_list');
+        if (saved) return JSON.parse(saved);
+      }
     } catch {
       // fallback
     }
@@ -139,7 +155,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     try {
-      localStorage.setItem('wsib_compare_list', JSON.stringify(compareList));
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('wsib_compare_list', JSON.stringify(compareList));
+      }
     } catch {
       // ignore
     }
@@ -148,15 +166,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Admin auth
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(() => {
     try {
-      return localStorage.getItem('wsib_admin_session') === 'true';
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return window.localStorage.getItem('wsib_admin_session') === 'true';
+      }
     } catch {
-      return false;
+      // ignore
     }
+    return false;
   });
 
   // Helper to parse path into ViewState
   const parsePathToViewState = (pathname: string, search: string): ViewState => {
-    const path = pathname.toLowerCase();
+    const rawPath = (pathname || '/').toLowerCase().trim();
+    const path = rawPath.replace(/\/+$/, '') || '/';
+
+    if (path === '/' || path === '/index.html') return { type: 'home' };
     if (path.startsWith('/finder')) return { type: 'finder' };
     if (path.startsWith('/compare')) return { type: 'compare' };
     if (path.startsWith('/categories')) return { type: 'categories' };
@@ -170,7 +194,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const slug = path.replace('/guides/', '').replace(/\/$/, '');
       if (slug) return { type: 'guide', slug };
     }
-    if (path.startsWith('/guides')) return { type: 'guides' };
+    if (path === '/guides') return { type: 'guides' };
     if (path.startsWith('/product/')) {
       const slug = path.replace('/product/', '').replace(/\/$/, '');
       if (slug) return { type: 'product', slug };
@@ -197,12 +221,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (path.startsWith('/affiliate-disclosure')) return { type: 'legal', page: 'affiliate' };
     if (path.startsWith('/cookies')) return { type: 'legal', page: 'cookies' };
     if (path.startsWith('/sitemap')) return { type: 'sitemap' };
-    return { type: 'home' };
+    return { type: '404' };
   };
 
   // View state & URL routing
   const [view, setViewState] = useState<ViewState>(() => {
-    return parsePathToViewState(window.location.pathname, window.location.search);
+    if (initialPath) {
+      return parsePathToViewState(initialPath, '');
+    }
+    if (typeof window !== 'undefined') {
+      return parsePathToViewState(window.location.pathname, window.location.search);
+    }
+    return { type: 'home' };
   });
 
   const [quickSearchOpen, setQuickSearchOpen] = useState(false);
@@ -219,7 +249,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const navigate = (newView: ViewState) => {
     setViewState(newView);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     let url = '/';
     if (newView.type === 'finder') url = '/finder';
@@ -236,9 +268,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       else url = `/${newView.page}`;
     } else if (newView.type === 'sitemap') url = '/sitemap.xml';
 
-    const currentFullUrl = window.location.pathname + window.location.search;
-    if (currentFullUrl !== url) {
-      window.history.pushState({}, '', url);
+    if (typeof window !== 'undefined') {
+      const currentFullUrl = window.location.pathname + window.location.search;
+      if (currentFullUrl !== url) {
+        window.history.pushState({}, '', url);
+      }
     }
   };
 

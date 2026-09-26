@@ -17,8 +17,9 @@ import { SearchResultsPage } from './pages/SearchResultsPage';
 import { AdminPage } from './pages/AdminPage';
 import { LegalPage } from './pages/LegalPage';
 import { SitemapPage } from './pages/SitemapPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
-const AppContent: React.FC = () => {
+export const AppContent: React.FC = () => {
   const { view } = useApp();
 
   return (
@@ -48,6 +49,7 @@ const AppContent: React.FC = () => {
         {view.type === 'admin' && <AdminPage />}
         {view.type === 'legal' && <LegalPage page={view.page} />}
         {view.type === 'sitemap' && <SitemapPage />}
+        {view.type === '404' && <NotFoundPage />}
       </main>
 
       {/* Floating Compare Tray (Pops up when 1+ products are queued) */}
@@ -62,9 +64,9 @@ const AppContent: React.FC = () => {
   );
 };
 
-export default function App() {
+export default function App({ initialPath }: { initialPath?: string } = {}) {
   return (
-    <AppProvider>
+    <AppProvider initialPath={initialPath}>
       <AppContent />
     </AppProvider>
   );

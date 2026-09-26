@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useApp } from '../context/AppContext';
+import { SITE_URL } from '../config/site';
 import {
   buildProductTitle,
   buildProductDescription,
@@ -33,10 +34,10 @@ export const SeoHead: React.FC<SeoProps> = ({
   let finalOgType: 'website' | 'article' | 'product' = ogType || 'website';
   let finalOgImage = ogImage;
   let finalJsonLd = jsonLd;
-  let currentPath = canonicalPath || window.location.pathname;
+  let currentPath = canonicalPath || (typeof window !== 'undefined' ? window.location.pathname : '/');
   let isNoIndex = false;
 
-  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://whatshouldibuy.org';
+  const origin = typeof window !== 'undefined' ? window.location.origin : SITE_URL;
 
   // Resolve dynamic metadata based on current view if not explicitly overridden via props
   if (!finalTitle || !finalDescription) {
@@ -413,6 +414,13 @@ export const SeoHead: React.FC<SeoProps> = ({
         finalDescription ||
         'Direct navigation index of all vetted product categories, buying guides, product comparison sheets, and consumer legal standards.';
       currentPath = '/sitemap.xml';
+    } else if (view.type === '404') {
+      finalTitle = finalTitle || 'Page Not Found (404) – What Should I Buy?';
+      finalDescription =
+        finalDescription ||
+        'The requested page could not be found. Explore tested product guides, finder tools, and reviews on What Should I Buy?';
+      currentPath = '/404';
+      isNoIndex = true;
     }
   }
 

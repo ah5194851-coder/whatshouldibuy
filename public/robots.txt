@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /api/
 
-Sitemap: https://whatshouldibuy.org/sitemap.xml
+Sitemap: https://whatshouldibuy.ah5194851.workers.dev/sitemap.xml

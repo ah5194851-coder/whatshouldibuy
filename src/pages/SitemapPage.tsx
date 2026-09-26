@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { FileCode, Copy, Check, ExternalLink } from 'lucide-react';
+import { SITE_URL } from '../config/site';
 
 export const SitemapPage: React.FC = () => {
   const { products, categories, guides, navigate } = useApp();
   const [tab, setTab] = useState<'sitemap' | 'robots' | 'links'>('sitemap');
   const [copied, setCopied] = useState(false);
 
-  const origin = window.location.origin;
+  const origin = typeof window !== 'undefined' ? window.location.origin : SITE_URL;
   const today = new Date().toISOString().slice(0, 10);
 
   // Generate XML Sitemap string
