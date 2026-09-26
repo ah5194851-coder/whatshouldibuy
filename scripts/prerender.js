@@ -1,12 +1,17 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
+import { build } from 'vite';
+
+// Enforce production mode to guarantee react/jsx-runtime (not jsx-dev-runtime)
+process.env.NODE_ENV = 'production';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'dist');
 const publicDir = path.resolve(rootDir, 'public');
+const ssrBuildDir = path.resolve(rootDir, '.ssr-build');
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -182,22 +187,37 @@ function processHtmlTemplate(template, appHtml, meta) {
 async function runPrerender() {
   console.log('🚀 Starting Static Site Prerendering for What Should I Buy?...');
 
-  // Check template exists
+  // 1. Verify client build exists
   const templatePath = path.resolve(distDir, 'index.html');
   if (!fs.existsSync(templatePath)) {
     throw new Error(`Client build not found at ${templatePath}. Run 'vite build' first.`);
   }
   const template = fs.readFileSync(templatePath, 'utf-8');
 
-  // Load server entry
-  const ssrBuildDir = path.resolve(rootDir, '.ssr-build');
+  // 2. Build SSR bundle programmatically in production mode
+  console.log('📦 Compiling SSR server entry with production mode...');
+  await build({
+    mode: 'production',
+    logLevel: 'warn',
+    build: {
+      ssr: path.resolve(rootDir, 'src/prerender/entry-server.tsx'),
+      outDir: ssrBuildDir,
+      emptyOutDir: true,
+      minify: false,
+    },
+    define: {
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    },
+  });
+
   const serverEntryPath = path.resolve(ssrBuildDir, 'entry-server.js');
   if (!fs.existsSync(serverEntryPath)) {
-    throw new Error(`SSR bundle not found at ${serverEntryPath}. Run 'vite build --ssr' first.`);
+    throw new Error(`SSR bundle not created at ${serverEntryPath}`);
   }
 
-  // Dynamic import of the bundled server entry
-  const { render, getAllRoutes, SITE_URL } = await import(serverEntryPath);
+  // 3. Import SSR bundle using file URL for standard ESM loader
+  const serverEntryUrl = pathToFileURL(serverEntryPath).href;
+  const { render, getAllRoutes, SITE_URL } = await import(serverEntryUrl);
   console.log(`📡 Base SITE_URL: ${SITE_URL}`);
 
   const routes = getAllRoutes();
@@ -221,7 +241,7 @@ async function runPrerender() {
     }
   }
 
-  // Generate sitemap.xml
+  // 4. Generate sitemap.xml
   const today = new Date().toISOString().slice(0, 10);
   const sitemapRoutes = routes.filter((r) => r.includeInSitemap);
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -244,7 +264,7 @@ ${sitemapRoutes
   fs.writeFileSync(path.resolve(distDir, 'sitemap.xml'), sitemapXml, 'utf-8');
   console.log(`🗺️  Generated sitemap.xml with ${sitemapRoutes.length} URLs`);
 
-  // Generate robots.txt
+  // 5. Generate robots.txt
   const robotsTxt = `User-agent: *
 Allow: /
 
@@ -254,15 +274,19 @@ Sitemap: ${SITE_URL}/sitemap.xml
   fs.writeFileSync(path.resolve(distDir, 'robots.txt'), robotsTxt, 'utf-8');
   console.log('🤖 Generated robots.txt');
 
-  // Clean up temporary .ssr-build
-  if (fs.existsSync(ssrBuildDir)) {
-    fs.rmSync(ssrBuildDir, { recursive: true, force: true });
+  // 6. Clean up temporary .ssr-build
+  try {
+    if (fs.existsSync(ssrBuildDir)) {
+      fs.rmSync(ssrBuildDir, { recursive: true, force: true });
+    }
+  } catch {
+    // ignore cleanup errors
   }
 
   console.log(`\n🎉 Prerendering complete! ${successCount} static HTML pages rendered successfully.`);
 }
 
 runPrerender().catch((err) => {
-  console.error('Prerender failed:', err);
+  console.error('\n❌ Prerender execution failed:', err);
   process.exit(1);
 });
