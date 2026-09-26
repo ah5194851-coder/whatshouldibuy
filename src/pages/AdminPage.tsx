@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Product } from '../types';
+import heroImg from '../assets/images/hero_product_curation_1790354697983.jpg';
 import {
   ShieldCheck,
   Lock,
@@ -81,7 +82,7 @@ export const AdminPage: React.FC = () => {
     brand: 'Acme',
     category: categories[0]?.slug || 'laptops',
     subcategory: 'Standard',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     price: 499,
     originalPrice: 599,
     currency: 'USD',

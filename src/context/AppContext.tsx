@@ -4,6 +4,7 @@ import { INITIAL_PRODUCTS } from '../data/products';
 import { INITIAL_CATEGORIES } from '../data/categories';
 import { INITIAL_GUIDES } from '../data/guides';
 import { formatPrice as formatPriceUtil, convertPrice as convertPriceUtil } from '../utils/currency';
+import { resolveImageSrc } from '../assets/images';
 
 export type ViewState =
   | { type: 'home' }
@@ -58,7 +59,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [products, setProducts] = useState<Product[]>(() => {
     try {
       const saved = localStorage.getItem('wsib_products_v1');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.map((p: Product) => ({
+            ...p,
+            image: resolveImageSrc(p.image),
+          }));
+        }
+      }
     } catch {
       // fallback
     }
@@ -69,7 +78,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [categories, setCategories] = useState<Category[]>(() => {
     try {
       const saved = localStorage.getItem('wsib_categories_v1');
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.map((c: Category) => ({
+            ...c,
+            image: resolveImageSrc(c.image),
+          }));
+        }
+      }
     } catch {
       // fallback
     }
@@ -328,12 +345,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     try {
       const data = JSON.parse(jsonString);
       if (Array.isArray(data.products)) {
-        setProducts(data.products);
-        localStorage.setItem('wsib_products_v1', JSON.stringify(data.products));
+        const sanitizedProducts = data.products.map((p: Product) => ({
+          ...p,
+          image: resolveImageSrc(p.image),
+        }));
+        setProducts(sanitizedProducts);
+        localStorage.setItem('wsib_products_v1', JSON.stringify(sanitizedProducts));
       }
       if (Array.isArray(data.categories)) {
-        setCategories(data.categories);
-        localStorage.setItem('wsib_categories_v1', JSON.stringify(data.categories));
+        const sanitizedCategories = data.categories.map((c: Category) => ({
+          ...c,
+          image: resolveImageSrc(c.image),
+        }));
+        setCategories(sanitizedCategories);
+        localStorage.setItem('wsib_categories_v1', JSON.stringify(sanitizedCategories));
       }
       if (Array.isArray(data.guides)) {
         setGuides(data.guides);

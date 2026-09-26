@@ -1,4 +1,8 @@
 import { Category } from '../types';
+import laptopImg from '../assets/images/cat_laptops_showcase_1790354718502.jpg';
+import headphoneImg from '../assets/images/cat_headphones_showcase_1790354735596.jpg';
+import cameraImg from '../assets/images/cat_cameras_showcase_1790354748549.jpg';
+import heroImg from '../assets/images/hero_product_curation_1790354697983.jpg';
 
 export const INITIAL_CATEGORIES: Category[] = [
   {
@@ -9,7 +13,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Ultrabooks, student notebooks, creators & workhorses',
     description: 'Independent evaluation of battery life, display color gamut, thermals, and real-world multitasking speed across Windows, macOS, and ChromeOS.',
     iconName: 'Laptop',
-    image: '/src/assets/images/cat_laptops_showcase_1790354718502.jpg',
+    image: laptopImg,
     subcategories: ['Thin & Light Ultrabooks', 'Student Laptops', 'Creative Workstations', 'Budget Productivity', '2-in-1 Convertibles'],
     topFeaturesToLookFor: [
       'Minimum 16GB unified RAM for longevity and modern browser tabs',
@@ -47,7 +51,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Flagship cameras, battery endurance & value champs',
     description: 'Rigorous side-by-side analysis of camera sensors, real-world battery drain, long-term software support guarantees, and sunlight readability.',
     iconName: 'Smartphone',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Flagship Phones', 'Value Champions ($350–$600)', 'Compact Phones', 'Foldables', 'Battery Endurance'],
     topFeaturesToLookFor: [
       'Guaranteed 5 to 7 years of major OS and security patch support',
@@ -81,7 +85,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Noise-cancelling, audiophile clarity & travel comfort',
     description: 'Acoustic frequency response testing, Active Noise Cancellation (ANC) attenuation in transit, ear-pad pressure distribution, and microphone background noise rejection.',
     iconName: 'Headphones',
-    image: '/src/assets/images/cat_headphones_showcase_1790354735596.jpg',
+    image: headphoneImg,
     subcategories: ['Over-Ear ANC', 'True Wireless Earbuds', 'Audiophile Open-Back', 'Workout & Running', 'Office Communication'],
     topFeaturesToLookFor: [
       'Effective active noise cancelling that blocks low-frequency rumble without cabin pressure',
@@ -115,7 +119,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'OLED contrast, Mini-LED punch & low-latency gaming',
     description: 'Black level measurement, HDR peak specular highlight brightness, color accuracy out of the box, viewing angle stability, and HDMI 2.1 gaming capability.',
     iconName: 'Tv',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['OLED TVs', 'Mini-LED Bright Rooms', 'Budget 4K HDR', 'Gaming 120Hz/144Hz', 'Large Format 75"+'],
     topFeaturesToLookFor: [
       'Self-lit OLED pixels or Mini-LED with hundreds of local dimming zones',
@@ -145,7 +149,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Mirrorless creators, full-frame hybrids & vloggers',
     description: 'Sensor dynamic range, autofocus tracking reliability, in-body image stabilization (IBIS), thermal runtime limits, and lens ecosystem value.',
     iconName: 'Camera',
-    image: '/src/assets/images/cat_cameras_showcase_1790354748549.jpg',
+    image: cameraImg,
     subcategories: ['APS-C Compact Hybrids', 'Full-Frame Creator Bodies', 'Vlogging & Travel', 'Action & Rugged', 'Medium Format'],
     topFeaturesToLookFor: [
       'Class-leading real-time eye and subject tracking autofocus',
@@ -175,7 +179,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Consoles, high-refresh monitors & handheld PCs',
     description: 'Frame pacing, input lag response, thermal throttling under sustained loads, and ergonomic controller precision.',
     iconName: 'Gamepad2',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Handheld PC Gaming', 'Home Consoles', 'High-Refresh Monitors', 'Mechanical Keyboards & Mice', 'Sim Racing & Controllers'],
     topFeaturesToLookFor: [
       'OLED or Fast-IPS panels with variable refresh rate (G-Sync/FreeSync)',
@@ -205,7 +209,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Cardio tracking, sleep recovery & notification triage',
     description: 'Heart rate sensor accuracy against medical ECG baselines, GPS multi-band satellite lock speed, battery longevity, and sapphire glass scratch resilience.',
     iconName: 'Watch',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Everyday Smartwatches', 'Multi-Sport GPS Watches', 'Hybrid Mechanicals', 'Budget Fitness Bands', 'Rugged Outdoor'],
     topFeaturesToLookFor: [
       'Multi-band dual-frequency GPS for precision tracking under urban towers or tree canopy',
@@ -235,7 +239,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Robot vacuums, air purifiers & climate control',
     description: 'HEPA filtration efficiency, LiDAR obstacle mapping, decibel noise levels under load, and long-term filter replacement costs.',
     iconName: 'Home',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Robot Vacuums & Mops', 'True HEPA Air Purifiers', 'Cordless Stick Vacuums', 'Smart Thermostats', 'Dehumidifiers'],
     topFeaturesToLookFor: [
       'LiDAR navigation with reactive camera obstacle avoidance for pet toys and cables',
@@ -265,7 +269,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Espresso machines, dual-zone air fryers & blenders',
     description: 'Thermal stability, motor wattage under load, PTFE-free ceramic nonstick durability, and ease of dishwasher cleanup.',
     iconName: 'UtensilsCrossed',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Espresso & Coffee', 'Dual-Zone Air Fryers', 'High-Speed Blenders', 'Sous Vide & Cookware', 'Stand Mixers'],
     topFeaturesToLookFor: [
       'PID temperature control for consistent brewing and cooking extraction',
@@ -295,7 +299,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Recovery tools, adjustable weights & cardio trainers',
     description: 'Amplitude stall force on massage guns, footprint efficiency for home gyms, Bluetooth cadence connectivity, and joint impact absorption.',
     iconName: 'Activity',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Percussive Massage Guns', 'Adjustable Dumbbells', 'Smart Rowers & Bikes', 'Resistance & Mobility', 'Recovery Boots'],
     topFeaturesToLookFor: [
       'High stall force (35+ lbs) and 12-16mm percussive stroke amplitude',
@@ -325,7 +329,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Ergonomic seating, dual-motor standing desks & monitors',
     description: 'Spinal lumbar support adjustments, anti-collision motor stability, eye-strain reducing color uniformity, and cable management design.',
     iconName: 'Briefcase',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Ergonomic Task Chairs', 'Dual-Motor Standing Desks', 'Ultrawide Monitors', 'Ergonomic Keyboards & Mice', 'Webcams & Lighting'],
     topFeaturesToLookFor: [
       'Synchronous tilt mechanism with independent lumbar tension tuning',
@@ -355,7 +359,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'Studio microphones, powered desktop monitors & DACs',
     description: 'Dynamic cardioid polar pattern isolation, signal-to-noise ratio, amplifier clean headroom, and DAC conversion fidelity.',
     iconName: 'Mic',
-    image: '/src/assets/images/cat_headphones_showcase_1790354735596.jpg',
+    image: headphoneImg,
     subcategories: ['Broadcast Microphones', 'Powered Studio Monitors', 'USB Audio Interfaces', 'Headphone DAC/Amps', 'Portable Bluetooth Speakers'],
     topFeaturesToLookFor: [
       'Dynamic capsules with tight cardioid pickup to reject untreated room echo and keyboard clicks',
@@ -385,7 +389,7 @@ export const INITIAL_CATEGORIES: Category[] = [
     tagline: 'GaN chargers, Thunderbolt docks & protective travel bags',
     description: 'Wattage power allocation profiles, high-speed thermal dissipation, port throughput standards (USB4 / TB4), and durable water-resistant fabrics.',
     iconName: 'Layers',
-    image: '/src/assets/images/hero_product_curation_1790354697983.jpg',
+    image: heroImg,
     subcategories: ['Multi-Port GaN Chargers', 'Thunderbolt & USB-C Docks', 'Travel Tech Pouches & Backpacks', 'Power Banks & MagSafe', 'Ergonomic Mice & Keyboards'],
     topFeaturesToLookFor: [
       'Gallium Nitride (GaN III) technology for cool, compact high-wattage (100W+) delivery',

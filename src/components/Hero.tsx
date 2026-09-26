@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Search, ArrowRight, CheckCircle2, Shield, Sparkles } from 'lucide-react';
+import heroImg from '../assets/images/hero_product_curation_1790354697983.jpg';
 
 export const Hero: React.FC = () => {
   const { navigate, setQuickSearchOpen } = useApp();
@@ -134,7 +135,7 @@ export const Hero: React.FC = () => {
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-[#E4E4E7] shadow-sm bg-[#F4F4F5]">
               <img
-                src="/src/assets/images/hero_product_curation_1790354697983.jpg"
+                src={heroImg}
                 alt="Editorial curation of tested laptops, audio equipment, and cameras"
                 className="w-full h-[320px] sm:h-[400px] object-cover"
                 referrerPolicy="no-referrer"
