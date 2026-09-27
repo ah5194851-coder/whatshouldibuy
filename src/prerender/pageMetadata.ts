@@ -28,9 +28,9 @@ export function getPageMetadata(route: string): PageMetadata {
 
   // 1. Home
   if (cleanRoute === '/' || cleanRoute === '/index.html') {
-    const title = `${SITE_NAME} – Product Finder & Comparison`;
+    const title = `${SITE_NAME} (2026) – Product Finder & Comparison Tool`;
     const description =
-      'Stop guessing what to buy. Tell us your budget and needs to find vetted consumer tech, home gear, and lifestyle products with transparent tradeoffs.';
+      'Find the best laptop for students, best phone under $500, travel headphones, and creator gear in 2026. Compare verified lab specs, pros, cons & live prices.';
     return {
       title,
       description,
@@ -38,26 +38,66 @@ export function getPageMetadata(route: string): PageMetadata {
       ogType: 'website',
       ogImage: defaultOgImage,
       twitterCard: 'summary_large_image',
-      jsonLd: {
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        'name': SITE_NAME,
-        'url': SITE_URL,
-        'description': description,
-        'potentialAction': {
-          '@type': 'SearchAction',
-          'target': `${SITE_URL}/search?q={search_term_string}`,
-          'query-input': 'required name=search_term_string',
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          'name': SITE_NAME,
+          'url': SITE_URL,
+          'description': description,
+          'potentialAction': {
+            '@type': 'SearchAction',
+            'target': `${SITE_URL}/search?q={search_term_string}`,
+            'query-input': 'required name=search_term_string',
+          },
         },
-      },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': [
+            {
+              '@type': 'Question',
+              'name': 'What is What Should I Buy?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'What Should I Buy is an independent consumer research and product decision platform. We evaluate laptops, smartphones, headphones, cameras, and home appliances using hands-on lab measurements, transparent trade-offs, and live multi-currency retailer price tracking.',
+              },
+            },
+            {
+              '@type': 'Question',
+              'name': 'Which laptop should I buy for college in 2026?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'For 90% of students, the Apple MacBook Air M3 (16GB RAM) or Lenovo Yoga Slim 7x is recommended for 14+ hour battery endurance, lightweight portability, and quiet operation in classrooms. For engineering students requiring Windows CAD software, Intel Core Ultra or AMD Ryzen ultrabooks are optimal.',
+              },
+            },
+            {
+              '@type': 'Question',
+              'name': 'How do you test and evaluate products without sponsored bias?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'We do not accept paid manufacturer placements or sponsored rankings. Every product is evaluated against verified battery drain under real workloads, display color accuracy, thermals, and material durability with mandatory pros and cons.',
+              },
+            },
+            {
+              '@type': 'Question',
+              'name': 'How does the side-by-side comparison matrix work?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'You can select up to 4 products across any category to view verified hardware specifications, battery runtime tests, retailer price differences, and key deciding differences in a side-by-side grid.',
+              },
+            },
+          ],
+        },
+      ],
     };
   }
 
   // 2. Finder
   if (cleanRoute === '/finder') {
-    const title = `Product Recommendation Finder – ${SITE_NAME}`;
+    const title = `Product Recommendation Finder (2026) – ${SITE_NAME}`;
     const description =
-      'Use our interactive decision engine. Set your budget, use case, and priority features to get vetted product matches with zero sponsored bias.';
+      'Use our interactive decision engine to find what to buy in 2026. Set your budget limit, use case, and priority features for vetted product matches.';
     return {
       title,
       description,
@@ -65,27 +105,51 @@ export function getPageMetadata(route: string): PageMetadata {
       ogType: 'website',
       ogImage: defaultOgImage,
       twitterCard: 'summary_large_image',
-      jsonLd: {
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        'name': `${SITE_NAME} Finder Engine`,
-        'url': `${SITE_URL}/finder`,
-        'applicationCategory': 'ShoppingApplication',
-        'description': description,
-        'offers': {
-          '@type': 'Offer',
-          'price': '0',
-          'priceCurrency': 'USD',
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          'name': `${SITE_NAME} Finder Engine`,
+          'url': `${SITE_URL}/finder`,
+          'applicationCategory': 'ShoppingApplication',
+          'description': description,
+          'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD',
+          },
         },
-      },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': [
+            {
+              '@type': 'Question',
+              'name': 'How does the Product Recommendation Finder choose matches?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Our matching engine evaluates your selected category, strict budget ceiling, intended use case, and priority hardware features (battery, weight, color accuracy) against verified laboratory benchmarks to calculate a transparent suitability percentage.',
+              },
+            },
+            {
+              '@type': 'Question',
+              'name': 'Can I filter for budget products under $500 or $800?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Yes. Use the interactive budget slider or quick presets (Under $300, Under $600, Under $1,000) to find vetted top-value options that meet your needs without overpaying.',
+              },
+            },
+          ],
+        },
+      ],
     };
   }
 
   // 3. Compare
   if (cleanRoute === '/compare') {
-    const title = `Side-by-Side Product Comparison – ${SITE_NAME}`;
+    const title = `Side-by-Side Product Comparison (2026) – ${SITE_NAME}`;
     const description =
-      'Compare specifications, real battery endurance, pros, cons, and live store prices across up to 4 consumer products head-to-head.';
+      'Compare specifications, real battery endurance, pros, cons, and live store prices across up to 4 consumer products head-to-head in our 2026 decision matrix.';
     return {
       title,
       description,
@@ -93,21 +157,53 @@ export function getPageMetadata(route: string): PageMetadata {
       ogType: 'website',
       ogImage: defaultOgImage,
       twitterCard: 'summary_large_image',
-      jsonLd: {
-        '@context': 'https://schema.org',
-        '@type': 'WebPage',
-        'name': title,
-        'description': description,
-        'url': `${SITE_URL}/compare`,
-      },
+      jsonLd: [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          'name': title,
+          'description': description,
+          'url': `${SITE_URL}/compare`,
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': [
+            {
+              '@type': 'Question',
+              'name': 'How do I compare products side-by-side on What Should I Buy?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Click "Add to Compare" on any 2 to 4 products in our catalog. The decision matrix will align their verified hardware specifications, battery runtime, weight, pros, cons, and retailer prices in a direct side-by-side comparison table.',
+              },
+            },
+            {
+              '@type': 'Question',
+              'name': 'How are specifications and battery life verified?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'We do not rely on manufacturer spec sheets alone. Our editorial team validates display nit brightness with colorimeters, tests battery drain under calibrated 200-nit web browsing workloads, and inspects build materials.',
+              },
+            },
+            {
+              '@type': 'Question',
+              'name': 'Can I compare products from different categories?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Yes. While comparing products within the same category (e.g. MacBook Air vs Lenovo Yoga) provides the most detailed spec-by-spec rows, you can add any items from across our 13 categories to assess budgets and trade-offs.',
+              },
+            },
+          ],
+        },
+      ],
     };
   }
 
   // 4. Categories Hub
   if (cleanRoute === '/categories') {
-    const title = `Consumer Product Categories – ${SITE_NAME}`;
+    const title = `Consumer Product Categories (2026 Buying Guides) – ${SITE_NAME}`;
     const description =
-      'Explore vetted product categories: Laptops, Smartphones, Headphones, Cameras, TVs, Gaming, Audio, Kitchen, and Home Appliances.';
+      'Explore 13 vetted product categories: Laptops, Smartphones, Headphones, Cameras, TVs, Gaming, Audio, Kitchen, and Home Appliances with 2026 buying guides.';
     return {
       title,
       description,
@@ -127,7 +223,7 @@ export function getPageMetadata(route: string): PageMetadata {
 
   // 5. Guides Hub
   if (cleanRoute === '/guides') {
-    const title = `In-Depth Buying Guides & Benchmarks – ${SITE_NAME}`;
+    const title = `In-Depth Buying Guides & Benchmarks (2026) – ${SITE_NAME}`;
     const description =
       'Independent research and testing guides for college laptops, creator cameras, travel headphones, and gaming TVs. Find what fits your needs.';
     return {
@@ -309,6 +405,22 @@ export function getPageMetadata(route: string): PageMetadata {
 
     const schemas: Record<string, any>[] = [collectionSchema, breadcrumbSchema];
 
+    if (category.howToSteps && category.howToSteps.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        'name': `How to Choose the Best ${category.name} in 2026`,
+        'description': category.aeoDirectDefinition || category.description,
+        'step': category.howToSteps.map((step, idx) => ({
+          '@type': 'HowToStep',
+          'position': idx + 1,
+          'name': step.name,
+          'text': step.text,
+          'url': `${canonicalUrl}#step-${idx + 1}`,
+        })),
+      });
+    }
+
     if (category.faqs && category.faqs.length > 0) {
       schemas.push({
         '@context': 'https://schema.org',
@@ -403,6 +515,22 @@ export function getPageMetadata(route: string): PageMetadata {
       };
 
       const schemas: Record<string, any>[] = [articleSchema, breadcrumbSchema];
+
+      if (guide.howToSteps && guide.howToSteps.length > 0) {
+        schemas.push({
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          'name': `How to Choose: ${guide.title}`,
+          'description': guide.aeoTakeaway || guide.summary,
+          'step': guide.howToSteps.map((step, idx) => ({
+            '@type': 'HowToStep',
+            'position': idx + 1,
+            'name': step.name,
+            'text': step.text,
+            'url': `${canonicalUrl}#step-${idx + 1}`,
+          })),
+        });
+      }
 
       if (guide.faqs && guide.faqs.length > 0) {
         schemas.push({

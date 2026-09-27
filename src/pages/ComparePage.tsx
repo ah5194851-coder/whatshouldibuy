@@ -10,7 +10,10 @@ import {
   AlertCircle,
   ArrowRight,
   ShieldCheck,
-  Star
+  Star,
+  ChevronDown,
+  Info,
+  HelpCircle
 } from 'lucide-react';
 
 export const ComparePage: React.FC = () => {
@@ -26,13 +29,14 @@ export const ComparePage: React.FC = () => {
 
   const [selectorModalOpen, setSelectorModalOpen] = useState(false);
   const [selectorCategoryFilter, setSelectorCategoryFilter] = useState('all');
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   // Selected products
   const selectedProducts: Product[] = compareList
     .map((id) => products.find((p) => p.id === id))
     .filter((p): p is Product => Boolean(p));
 
-  // If list has < 2 products, offer quick starter sets (e.g. MacBook Air vs Lenovo Slim, or iPhone 16 Pro vs S24 Ultra)
+  // If list has < 2 products, offer quick starter sets
   const handleLoadPreset = (ids: string[]) => {
     clearCompare();
     ids.forEach((id) => addToCompare(id));
@@ -45,20 +49,40 @@ export const ComparePage: React.FC = () => {
     )
   );
 
+  const compareFaqs = [
+    {
+      question: 'How do I compare products side-by-side on What Should I Buy?',
+      answer: 'Click "Add to Compare" on any 2 to 4 products across our catalog, or select from one of our popular head-to-head comparison presets. The matrix will automatically align their verified hardware specifications, battery runtime, weight, pros, cons, and current retailer prices.'
+    },
+    {
+      question: 'How are specifications and battery life verified?',
+      answer: 'We do not rely on manufacturer spec sheets alone. Our editorial team validates display nit brightness with colorimeters, tests battery drain under calibrated 200-nit web browsing workloads, and inspects build materials.'
+    },
+    {
+      question: 'Can I compare products from different categories?',
+      answer: 'Yes. While comparing products within the same category (e.g. MacBook Air vs Lenovo Yoga) provides the most detailed spec-by-spec rows, you can add any items from across our 13 categories to assess budgets and trade-offs.'
+    },
+    {
+      question: 'Are retailer prices updated in real time?',
+      answer: 'Yes. We track pricing across major authorized retailers (including Amazon, Best Buy, and B&H Photo) and convert prices instantly into USD ($), GBP (£), EUR (€), CAD (CA$), and AUD (A$).'
+    }
+  ];
+
   return (
-    <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="border-b border-[#E4E4E7] pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      
+      {/* 1. Header (Single H1) */}
+      <div className="border-b border-[#E4E4E7] pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#71717A] uppercase tracking-wider mb-1">
             <Scale className="w-3.5 h-3.5" />
-            <span>Side-by-Side Product Comparison</span>
+            <span>Independent Product Research Matrix</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#18181B]">
-            Product Decision Matrix
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#18181B]">
+            Side-by-Side Product Comparison (2026) – Decision Matrix
           </h1>
           <p className="text-sm text-[#52525B] mt-1 max-w-2xl">
-            Compare 2 to 4 products across verified hardware specifications, battery runtime, pros, cons, and current retailer pricing.
+            Compare 2 to 4 products across verified hardware specifications, measured battery life, trade-offs, and live store prices.
           </p>
         </div>
 
@@ -84,6 +108,19 @@ export const ComparePage: React.FC = () => {
         </div>
       </div>
 
+      {/* 2. AEO Explainer Box */}
+      <div className="bg-[#FAFAFA] rounded-2xl border border-[#E4E4E7] p-5 space-y-2">
+        <div className="flex items-center gap-2">
+          <Info className="w-4 h-4 text-[#18181B]" />
+          <h2 className="text-xs font-bold uppercase tracking-wider text-[#18181B]">
+            How to Use This Comparison Matrix
+          </h2>
+        </div>
+        <p className="text-xs sm:text-sm text-[#3F3F46] leading-relaxed">
+          Our comparison tool places products on an equal testing playing field. Every model is evaluated for real battery endurance under continuous 200-nit mixed browsing, screen color gamut accuracy, and physical weight. Use this matrix to weigh performance upgrades against street price differences.
+        </p>
+      </div>
+
       {/* Empty State */}
       {selectedProducts.length === 0 ? (
         <div className="bg-white rounded-2xl border border-[#E4E4E7] p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-6">
@@ -103,7 +140,7 @@ export const ComparePage: React.FC = () => {
           {/* Quick Presets */}
           <div className="space-y-2 pt-2">
             <span className="text-xs font-bold uppercase tracking-wider text-[#71717A] block">
-              Popular Head-to-Head Comparisons
+              Popular 2026 Head-to-Head Comparisons
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
               <button
@@ -114,10 +151,10 @@ export const ComparePage: React.FC = () => {
                     'prod-acer-swift-go-14'
                   ])
                 }
-                className="p-3 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
+                className="p-3.5 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
               >
-                <span className="text-xs font-bold text-[#18181B] block">MacBook Air M3 vs Yoga Slim 7x</span>
-                <span className="text-[11px] text-[#71717A]">Apple Silicon vs Snapdragon X Elite Ultrabooks</span>
+                <span className="text-xs font-bold text-[#18181B] block">MacBook Air M3 vs Yoga Slim 7x vs Swift Go 14</span>
+                <span className="text-[11px] text-[#71717A]">Apple Silicon vs Snapdragon X Elite vs Budget OLED</span>
               </button>
 
               <button
@@ -127,10 +164,10 @@ export const ComparePage: React.FC = () => {
                     'prod-bose-qc-ultra-headphones'
                   ])
                 }
-                className="p-3 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
+                className="p-3.5 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
               >
                 <span className="text-xs font-bold text-[#18181B] block">Sony WH-1000XM5 vs Bose QC Ultra</span>
-                <span className="text-[11px] text-[#71717A]">Battery & Sound vs Folding Travel Comfort</span>
+                <span className="text-[11px] text-[#71717A]">30-Hour Battery & ANC vs Folding Travel Comfort</span>
               </button>
 
               <button
@@ -141,10 +178,10 @@ export const ComparePage: React.FC = () => {
                     'prod-google-pixel-9a'
                   ])
                 }
-                className="p-3 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
+                className="p-3.5 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
               >
-                <span className="text-xs font-bold text-[#18181B] block">iPhone 16 Pro vs S24 Ultra vs Pixel 8a</span>
-                <span className="text-[11px] text-[#71717A]">Flagship Cameras vs Value Champion</span>
+                <span className="text-xs font-bold text-[#18181B] block">iPhone 16 Pro vs S25 vs Pixel 9a</span>
+                <span className="text-[11px] text-[#71717A]">Flagship Creator Video vs 200MP Zoom vs Best Under $500</span>
               </button>
 
               <button
@@ -154,10 +191,10 @@ export const ComparePage: React.FC = () => {
                     'prod-fujifilm-xt5'
                   ])
                 }
-                className="p-3 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
+                className="p-3.5 rounded-xl border border-[#E4E4E7] hover:border-[#18181B] hover:bg-[#FAFAFA] transition-all"
               >
                 <span className="text-xs font-bold text-[#18181B] block">Sony A6700 vs Fujifilm X-T5</span>
-                <span className="text-[11px] text-[#71717A]">AI Video Tracking vs Analog Film Simulations</span>
+                <span className="text-[11px] text-[#71717A]">AI Tracking Video vs Analog Film Simulations</span>
               </button>
             </div>
           </div>
@@ -174,8 +211,8 @@ export const ComparePage: React.FC = () => {
       ) : (
         <div className="space-y-8">
           
-          {/* Main Comparison Matrix Container with Horizontal Scroll Safety for Mobile */}
-          <div className="bg-white rounded-2xl border border-[#E4E4E7] shadow-sm overflow-hidden">
+          {/* Main Comparison Matrix Container */}
+          <section aria-labelledby="matrix-title" className="bg-white rounded-2xl border border-[#E4E4E7] shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[640px]">
                 
@@ -207,7 +244,7 @@ export const ComparePage: React.FC = () => {
                           <div className="h-28 w-full rounded-lg overflow-hidden border border-[#E4E4E7] bg-white flex items-center justify-center">
                             <img
                               src={prod.image}
-                              alt={prod.name}
+                              alt={`${prod.name} ${prod.brand} specifications and price comparison`}
                               className="w-full h-full object-cover"
                               referrerPolicy="no-referrer"
                             />
@@ -403,21 +440,65 @@ export const ComparePage: React.FC = () => {
                 </tbody>
               </table>
             </div>
-          </div>
+          </section>
 
           {/* Important Differences Summary Box */}
-          <div className="bg-[#FAFAFA] rounded-2xl border border-[#E4E4E7] p-6 space-y-3">
-            <h3 className="font-bold text-sm text-[#18181B] uppercase tracking-wider flex items-center gap-2">
+          <section aria-labelledby="differences-title" className="bg-[#FAFAFA] rounded-2xl border border-[#E4E4E7] p-6 space-y-3">
+            <h2 id="differences-title" className="font-bold text-sm text-[#18181B] uppercase tracking-wider flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-[#18181B]" />
               <span>Key Verdict & Deciding Differences</span>
-            </h3>
-            <p className="text-xs text-[#52525B] leading-relaxed">
+            </h2>
+            <p className="text-xs sm:text-sm text-[#52525B] leading-relaxed">
               When choosing between these options, prioritize battery endurance and physical weight if you travel frequently. If peak visual clarity, video color grading, or high-FPS gaming is required, pay close attention to display refresh rate and dedicated processing power.
             </p>
-          </div>
+          </section>
 
         </div>
       )}
+
+      {/* 3. Product Comparison FAQs (Matches FAQPage Schema) */}
+      <section aria-labelledby="compare-faq-title" className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 space-y-6">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#71717A] uppercase tracking-wider mb-1">
+            <HelpCircle className="w-3.5 h-3.5 text-[#18181B]" />
+            <span>Comparison Help</span>
+          </div>
+          <h2 id="compare-faq-title" className="text-xl sm:text-2xl font-bold text-[#18181B]">
+            Product Comparison Frequently Asked Questions
+          </h2>
+          <p className="text-xs text-[#71717A] mt-1">
+            Learn how we evaluate models side-by-side without manufacturer influence.
+          </p>
+        </div>
+
+        <div className="divide-y divide-[#E4E4E7]">
+          {compareFaqs.map((faq, idx) => {
+            const isOpen = openFaqIndex === idx;
+
+            return (
+              <div key={idx} className="py-4 first:pt-0 last:pb-0">
+                <button
+                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                  className="w-full text-left flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-[#18181B]"
+                >
+                  <span>{faq.question}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#71717A] shrink-0 transition-transform ${
+                      isOpen ? 'rotate-180 text-[#18181B]' : ''
+                    }`}
+                  />
+                </button>
+
+                {isOpen && (
+                  <p className="mt-2.5 text-xs sm:text-sm text-[#52525B] leading-relaxed pr-8">
+                    {faq.answer}
+                  </p>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* Add Product Modal */}
       {selectorModalOpen && (
@@ -482,7 +563,7 @@ export const ComparePage: React.FC = () => {
                       <div className="w-12 h-12 rounded border border-[#E4E4E7] overflow-hidden bg-[#FAFAFA] shrink-0">
                         <img
                           src={prod.image}
-                          alt={prod.name}
+                          alt={`${prod.name} thumbnail`}
                           className="w-full h-full object-cover"
                           referrerPolicy="no-referrer"
                         />

@@ -122,7 +122,7 @@ export const FinderTool: React.FC<FinderToolProps> = ({ initialCategory = 'lapto
               <span>Interactive Decision Engine</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#18181B]">
-              What Should I Buy? Finder
+              Product Recommendation Finder (2026) – What Should I Buy?
             </h1>
             <p className="text-sm text-[#52525B] mt-1 max-w-2xl">
               Specify your category, budget limit, and primary priorities. We calculate suitability based on lab measurements and real-world trade-offs.
@@ -391,7 +391,7 @@ export const FinderTool: React.FC<FinderToolProps> = ({ initialCategory = 'lapto
                       <div className="md:col-span-4 rounded-xl overflow-hidden border border-[#E4E4E7] bg-[#F9F9F8] h-48 md:h-44 flex items-center justify-center relative">
                         <img
                           src={product.image}
-                          alt={product.name}
+                          alt={`${product.name} - ${product.brand} verified suitability match`}
                           className="w-full h-full object-cover"
                           referrerPolicy="no-referrer"
                         />
@@ -533,6 +533,50 @@ export const FinderTool: React.FC<FinderToolProps> = ({ initialCategory = 'lapto
         </div>
 
       </div>
+
+      {/* Finder Tool FAQs (Matches FAQPage Schema) */}
+      <section aria-labelledby="finder-faq-title" className="mt-12 pt-8 border-t border-[#E4E4E7] space-y-6">
+        <div>
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#71717A] uppercase tracking-wider mb-1">
+            <Info className="w-3.5 h-3.5 text-[#18181B]" />
+            <span>Decision Engine Help</span>
+          </div>
+          <h2 id="finder-faq-title" className="text-xl sm:text-2xl font-bold text-[#18181B]">
+            Product Finder Frequently Asked Questions
+          </h2>
+          <p className="text-xs text-[#71717A] mt-1">
+            Understand how our algorithm matches products to your requirements.
+          </p>
+        </div>
+
+        <div className="divide-y divide-[#E4E4E7] bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8">
+          <div className="py-4 first:pt-0">
+            <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
+              How does the Product Recommendation Finder choose matches?
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              Our matching engine evaluates your selected category, strict budget ceiling, intended use case, and priority hardware features (battery, weight, color accuracy) against verified laboratory benchmarks to calculate a transparent suitability percentage.
+            </p>
+          </div>
+          <div className="py-4">
+            <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
+              Can I filter for budget products under $500 or $800?
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              Yes. Use the interactive budget slider or quick presets (Under $300, Under $600, Under $1,000) to find vetted top-value options that meet your needs without overpaying.
+            </p>
+          </div>
+          <div className="py-4 last:pb-0">
+            <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
+              How are trade-offs and compromises determined?
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              Every matched card highlights the trade-offs of that model—such as soldered non-upgradable RAM, missing headphone jacks, or shorter battery life under intensive workflows—so you are never surprised after purchase.
+            </p>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 };

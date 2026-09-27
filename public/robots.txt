@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://whatshouldibuy.ah5194851.workers.dev/sitemap.xml
+Sitemap: whatshouldibuy.ah5194851.workers.dev/sitemap.xml

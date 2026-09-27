@@ -19,12 +19,22 @@ export const GuidesPage: React.FC = () => {
           Editorial Research & Buying Strategy
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#18181B]">
-          Decision-Focused Buying Guides
+          Decision-Focused Buying Guides (2026) – What Should I Buy?
         </h1>
         <p className="text-sm text-[#52525B] mt-1 max-w-2xl">
           Independent, multi-hour laboratory evaluations. We establish strict testing baselines, eliminate sponsor influence, and tell you directly who should and shouldn’t buy each model.
         </p>
       </div>
+
+      {/* AEO Quick Guide Explainer */}
+      <section aria-labelledby="guides-overview" className="bg-[#FAFAFA] rounded-2xl border border-[#E4E4E7] p-6 space-y-2">
+        <h2 id="guides-overview" className="text-xs font-bold uppercase tracking-wider text-[#18181B]">
+          How Our Buying Guides Work
+        </h2>
+        <p className="text-sm text-[#3F3F46] leading-relaxed">
+          Our buying guides distill hundreds of hours of hands-on laboratory testing into clear, actionable advice. Rather than listing every available product, we identify the single best overall recommendation, the best value option under a strict budget ceiling, and the premium upgrade pick for specialized creative or professional workloads.
+        </p>
+      </section>
 
       {/* Filter Chips */}
       <div className="flex gap-2 overflow-x-auto pb-2 text-xs">
@@ -102,6 +112,48 @@ export const GuidesPage: React.FC = () => {
           </article>
         ))}
       </div>
+
+      {/* Buying Guides Hub FAQs */}
+      <section aria-labelledby="guides-faq-heading" className="pt-8 border-t border-[#E4E4E7] space-y-6">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wider text-[#71717A] mb-1">
+            Editorial Research Help
+          </div>
+          <h2 id="guides-faq-heading" className="text-xl sm:text-2xl font-bold text-[#18181B]">
+            Buying Guides Frequently Asked Questions (2026)
+          </h2>
+          <p className="text-xs text-[#71717A] mt-1">
+            How we select, test, and crown the top recommendations in our buyer guides.
+          </p>
+        </div>
+
+        <div className="divide-y divide-[#E4E4E7] bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8">
+          <div className="py-4 first:pt-0">
+            <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
+              How does "What Should I Buy?" choose the #1 recommended product?
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              Our #1 pick represents the highest balance of everyday performance, verified battery endurance, build quality, and fair pricing. We prioritize products that provide an uncompromising experience for at least 3 to 5 years of daily use.
+            </p>
+          </div>
+          <div className="py-4">
+            <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
+              Do manufacturers send you free review units or pay for rankings?
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              No. We buy retail units with our own editorial budget or borrow calibrated testing samples under strict editorial independence agreements. We never accept sponsored product placements or guarantee favorable verdicts.
+            </p>
+          </div>
+          <div className="py-4 last:pb-0">
+            <h3 className="font-bold text-sm sm:text-base text-[#18181B]">
+              How often are buying guides updated with new hardware?
+            </h3>
+            <p className="mt-1.5 text-xs sm:text-sm text-[#52525B] leading-relaxed">
+              Our editorial team re-tests hardware quarterly or whenever major generational silicon launches (such as Apple M-series chips, Intel Core Ultra, AMD Ryzen, or Snapdragon X Elite).
+            </p>
+          </div>
+        </div>
+      </section>
 
     </div>
   );

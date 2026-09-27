@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Hero } from '../components/Hero';
 import { PopularCategories } from '../components/PopularCategories';
@@ -11,16 +11,42 @@ import {
   Star,
   ExternalLink,
   ShieldCheck,
-  Check
+  Check,
+  ChevronDown,
+  HelpCircle
 } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
   const { products, guides, formatPrice, addToCompare, isInCompare, navigate } = useApp();
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   // Featured spotlight products for comparison teaser
   const spotlightProducts = products.filter((p) =>
     ['prod-macbook-air-m3', 'prod-lenovo-yoga-slim-7x', 'prod-acer-swift-go-14'].includes(p.id)
   );
+
+  const homeFaqs = [
+    {
+      question: 'What is What Should I Buy?',
+      answer: 'What Should I Buy is an independent consumer product research, side-by-side comparison, and decision platform. We evaluate laptops, smartphones, headphones, cameras, TVs, and home appliances using calibrated laboratory measurements, transparent trade-offs, and live multi-currency store price monitoring.'
+    },
+    {
+      question: 'Which laptop should I buy for college in 2026?',
+      answer: 'For 90% of college students, the Apple MacBook Air M3 (16GB RAM) or Lenovo Yoga Slim 7x is recommended. Both provide 14+ hours of genuine battery runtime, quiet operation in quiet lecture halls, and lightweight durable frames under 3 lbs. If you require specialized Windows CAD or engineering software, choose an Intel Core Ultra or AMD Ryzen ultrabook.'
+    },
+    {
+      question: 'What is the best phone under $500 in 2026?',
+      answer: 'The Google Pixel 9a is our top recommendation for the best phone under $500. It offers 90% of flagship camera performance, Google Real Tone skin accuracy, and 7 years of full operating system and security updates.'
+    },
+    {
+      question: 'How do you test products without sponsored bias?',
+      answer: 'We do not accept paid manufacturer placements, sponsored review units, or pay-for-play rankings. We measure battery runtime under standardized 200-nit web browsing workloads, measure display color accuracy with colorimeters, and publish explicit trade-offs and cons for every model.'
+    },
+    {
+      question: 'How does the side-by-side product comparison tool work?',
+      answer: 'You can select any 2 to 4 products from across our catalog. The decision matrix lines up verified hardware specifications, measured battery life, pros, cons, and current live prices across major retailers like Amazon, Best Buy, and B&H in a direct side-by-side table.'
+    }
+  ];
 
   return (
     <div className="space-y-0">
@@ -107,7 +133,7 @@ export const HomePage: React.FC = () => {
                 Side-by-Side Analysis
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#18181B]">
-                Popular Head-to-Head Comparisons
+                Popular Head-to-Head Comparisons (2026)
               </h2>
               <p className="text-sm text-[#52525B] mt-1">
                 Direct spec comparisons without promotional bias.
@@ -135,7 +161,7 @@ export const HomePage: React.FC = () => {
                     <div className="h-44 rounded-xl overflow-hidden bg-[#FAFAFA] border border-[#E4E4E7]">
                       <img
                         src={prod.image}
-                        alt={prod.name}
+                        alt={`${prod.name} ${prod.brand} laptop specifications and price comparison`}
                         className="w-full h-full object-cover"
                         referrerPolicy="no-referrer"
                       />
@@ -333,6 +359,52 @@ export const HomePage: React.FC = () => {
               </p>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Homepage Frequently Asked Questions (Structured for AI Overviews & Search) */}
+      <section aria-labelledby="home-faq-title" className="py-14 sm:py-20 border-b border-[#E4E4E7] bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#71717A] uppercase tracking-wider mb-1">
+              <HelpCircle className="w-3.5 h-3.5 text-[#18181B]" />
+              <span>Consumer Buyer Assistance</span>
+            </div>
+            <h2 id="home-faq-title" className="text-2xl sm:text-3xl font-bold tracking-tight text-[#18181B]">
+              Frequently Asked Buyer Questions (2026)
+            </h2>
+            <p className="text-sm text-[#52525B] mt-1">
+              Independent answers to the most common product research questions.
+            </p>
+          </div>
+
+          <div className="divide-y divide-[#E4E4E7] border border-[#E4E4E7] rounded-2xl p-6 sm:p-8 bg-[#FAFAFA]">
+            {homeFaqs.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+
+              return (
+                <div key={idx} className="py-4 first:pt-0 last:pb-0">
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    className="w-full text-left flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-[#18181B]"
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      className={`w-4 h-4 text-[#71717A] shrink-0 transition-transform ${
+                        isOpen ? 'rotate-180 text-[#18181B]' : ''
+                      }`}
+                    />
+                  </button>
+
+                  {isOpen && (
+                    <p className="mt-2.5 text-xs sm:text-sm text-[#52525B] leading-relaxed pr-8">
+                      {faq.answer}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

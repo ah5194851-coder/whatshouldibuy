@@ -42,13 +42,14 @@ export const SeoHead: React.FC<SeoProps> = ({
   // Resolve dynamic metadata based on current view if not explicitly overridden via props
   if (!finalTitle || !finalDescription) {
     if (view.type === 'home') {
-      finalTitle = finalTitle || 'What Should I Buy? – Product Finder & Comparison';
+      finalTitle = finalTitle || 'What Should I Buy? (2026) – Product Finder & Comparison Tool';
       finalDescription =
         finalDescription ||
-        'Stop guessing what to buy. Tell us your budget and needs to find vetted consumer tech, home gear, and lifestyle products with transparent tradeoffs.';
+        'Find the best laptop for students, best phone under $500, travel headphones, and creator gear in 2026. Compare verified lab specs, pros, cons & live prices.';
       currentPath = '/';
       finalOgType = 'website';
-      finalJsonLd = finalJsonLd || {
+
+      const homeWebSchema = {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         'name': 'What Should I Buy?',
@@ -67,31 +68,96 @@ export const SeoHead: React.FC<SeoProps> = ({
           'priceCurrency': 'USD'
         }
       };
+
+      const homeFaqSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'What is What Should I Buy?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'What Should I Buy is an independent consumer research and product decision platform. We evaluate laptops, smartphones, headphones, cameras, and home appliances using hands-on lab measurements, transparent trade-offs, and live multi-currency retailer price tracking.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Which laptop should I buy for college in 2026?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'For 90% of students, the Apple MacBook Air M3 (16GB RAM) or Lenovo Yoga Slim 7x is recommended for 14+ hour battery endurance, lightweight portability, and quiet operation in classrooms. For engineering students requiring Windows CAD software, Intel Core Ultra or AMD Ryzen ultrabooks are optimal.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How do you test and evaluate products without sponsored bias?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'We do not accept paid manufacturer placements or sponsored rankings. Every product is evaluated against verified battery drain under real workloads, display color accuracy, thermals, and material durability with mandatory pros and cons.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How does the side-by-side comparison matrix work?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'You can select up to 4 products across any category to view verified hardware specifications, battery runtime tests, retailer price differences, and key deciding differences in a side-by-side grid.'
+            }
+          }
+        ]
+      };
+
+      finalJsonLd = finalJsonLd || [homeWebSchema, homeFaqSchema];
     } else if (view.type === 'finder') {
-      finalTitle = finalTitle || 'Product Recommendation Finder – What Should I Buy?';
+      finalTitle = finalTitle || 'Product Recommendation Finder (2026) – What Should I Buy?';
       finalDescription =
         finalDescription ||
-        'Use our interactive decision engine. Set your budget, use case, and priority features to get vetted product matches with zero sponsored bias.';
+        'Use our interactive decision engine to find what to buy in 2026. Set your budget limit, use case, and priority features for vetted product matches.';
       currentPath = '/finder';
       finalOgType = 'website';
-      finalJsonLd = finalJsonLd || {
-        '@context': 'https://schema.org',
-        '@type': 'WebApplication',
-        'name': 'What Should I Buy? Finder Engine',
-        'url': `${origin}/finder`,
-        'applicationCategory': 'ShoppingApplication',
-        'description': finalDescription,
-        'offers': {
-          '@type': 'Offer',
-          'price': '0',
-          'priceCurrency': 'USD'
+      finalJsonLd = finalJsonLd || [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebApplication',
+          'name': 'What Should I Buy? Finder Engine',
+          'url': `${origin}/finder`,
+          'applicationCategory': 'ShoppingApplication',
+          'description': finalDescription,
+          'offers': {
+            '@type': 'Offer',
+            'price': '0',
+            'priceCurrency': 'USD'
+          }
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': [
+            {
+              '@type': 'Question',
+              'name': 'How does the Product Recommendation Finder choose matches?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Our matching engine evaluates your selected category, strict budget ceiling, intended use case, and priority hardware features (battery, weight, color accuracy) against verified laboratory benchmarks to calculate a transparent suitability percentage.'
+              }
+            },
+            {
+              '@type': 'Question',
+              'name': 'Can I filter for budget products under $500 or $800?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Yes. Use the interactive budget slider or quick presets (Under $300, Under $600, Under $1,000) to find vetted top-value options that meet your needs without overpaying.'
+              }
+            }
+          ]
         }
-      };
+      ];
     } else if (view.type === 'categories') {
-      finalTitle = finalTitle || 'Consumer Product Categories – What Should I Buy?';
+      finalTitle = finalTitle || 'Consumer Product Categories (2026 Buying Guides) – What Should I Buy?';
       finalDescription =
         finalDescription ||
-        'Explore vetted product categories: Laptops, Smartphones, Headphones, Cameras, TVs, Gaming, Audio, Kitchen, and Home Appliances.';
+        'Explore 13 vetted product categories: Laptops, Smartphones, Headphones, Cameras, TVs, Gaming, Audio, Kitchen, and Home Appliances with 2026 buying guides.';
       currentPath = '/categories';
       finalOgType = 'website';
     } else if (view.type === 'category') {
@@ -104,7 +170,7 @@ export const SeoHead: React.FC<SeoProps> = ({
         finalOgType = 'website';
         finalOgImage = finalOgImage || cat.image;
 
-        // Structured Data: CollectionPage + ItemList of top products + FAQPage
+        // Structured Data: CollectionPage + ItemList of top products + HowTo + FAQPage
         const schemas: Record<string, any>[] = [
           {
             '@context': 'https://schema.org',
@@ -149,6 +215,22 @@ export const SeoHead: React.FC<SeoProps> = ({
             ]
           }
         ];
+
+        if (cat.howToSteps && cat.howToSteps.length > 0) {
+          schemas.push({
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': `How to Choose the Best ${cat.name} in 2026`,
+            'description': cat.aeoDirectDefinition || cat.description,
+            'step': cat.howToSteps.map((step, idx) => ({
+              '@type': 'HowToStep',
+              'position': idx + 1,
+              'name': step.name,
+              'text': step.text,
+              'url': `${origin}/category/${cat.slug}#step-${idx + 1}`
+            }))
+          });
+        }
 
         if (cat.faqs && cat.faqs.length > 0) {
           schemas.push({
@@ -261,14 +343,53 @@ export const SeoHead: React.FC<SeoProps> = ({
         finalJsonLd = finalJsonLd || [productSchema, breadcrumbsSchema];
       }
     } else if (view.type === 'compare') {
-      finalTitle = finalTitle || 'Side-by-Side Product Comparison – What Should I Buy?';
+      finalTitle = finalTitle || 'Side-by-Side Product Comparison (2026) – What Should I Buy?';
       finalDescription =
         finalDescription ||
-        'Compare specifications, real battery endurance, pros, cons, and live store prices across up to 4 consumer products head-to-head.';
+        'Compare specifications, real battery endurance, pros, cons, and live store prices across up to 4 consumer products head-to-head in our 2026 decision matrix.';
       currentPath = '/compare';
       finalOgType = 'website';
+      finalJsonLd = finalJsonLd || [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          'name': finalTitle,
+          'description': finalDescription,
+          'url': `${origin}/compare`
+        },
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          'mainEntity': [
+            {
+              '@type': 'Question',
+              'name': 'How do I compare products side-by-side on What Should I Buy?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Click "Add to Compare" on any 2 to 4 products in our catalog. The decision matrix will align their verified hardware specifications, battery runtime, weight, pros, cons, and retailer prices in a direct side-by-side comparison table.'
+              }
+            },
+            {
+              '@type': 'Question',
+              'name': 'How are specifications and battery life verified?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'We do not rely on manufacturer spec sheets alone. Our editorial team validates display nit brightness with colorimeters, tests battery drain under calibrated 200-nit web browsing workloads, and inspects build materials.'
+              }
+            },
+            {
+              '@type': 'Question',
+              'name': 'Can I compare products from different categories?',
+              'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': 'Yes. While comparing products within the same category (e.g. MacBook Air vs Lenovo Yoga) provides the most detailed spec-by-spec rows, you can add any items from across our 13 categories to assess budgets and trade-offs.'
+              }
+            }
+          ]
+        }
+      ];
     } else if (view.type === 'guides') {
-      finalTitle = finalTitle || 'In-Depth Buying Guides & Benchmarks – What Should I Buy?';
+      finalTitle = finalTitle || 'In-Depth Buying Guides & Benchmarks (2026) – What Should I Buy?';
       finalDescription =
         finalDescription ||
         'Independent research and testing guides for college laptops, creator cameras, travel headphones, and gaming TVs. Find what fits your needs.';
@@ -341,6 +462,22 @@ export const SeoHead: React.FC<SeoProps> = ({
         };
 
         const schemas: Record<string, any>[] = [articleSchema, breadcrumbsSchema];
+
+        if (guide.howToSteps && guide.howToSteps.length > 0) {
+          schemas.push({
+            '@context': 'https://schema.org',
+            '@type': 'HowTo',
+            'name': `How to Choose: ${guide.title}`,
+            'description': guide.aeoTakeaway || guide.summary,
+            'step': guide.howToSteps.map((step, idx) => ({
+              '@type': 'HowToStep',
+              'position': idx + 1,
+              'name': step.name,
+              'text': step.text,
+              'url': `${origin}/guides/${guide.slug}#step-${idx + 1}`
+            }))
+          });
+        }
 
         if (guide.faqs && guide.faqs.length > 0) {
           schemas.push({

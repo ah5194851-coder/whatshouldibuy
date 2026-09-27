@@ -10,7 +10,9 @@ import {
   Star,
   BookOpen,
   HelpCircle,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Sparkles,
+  Info
 } from 'lucide-react';
 
 interface CategoryPageProps {
@@ -89,19 +91,19 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
   }
 
   return (
-    <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <div className="py-8 sm:py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
       
-      {/* 1. Category Introduction & Hero Banner */}
+      {/* 1. Category Introduction & Hero Banner (Single H1) */}
       <div className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 shadow-sm">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div className="lg:col-span-8 space-y-4">
             <div className="inline-flex items-center gap-2 text-xs font-semibold text-[#71717A] uppercase tracking-wider">
-              <span>Category Overview</span>
+              <span>Consumer Product Research</span>
               <span aria-hidden="true">·</span>
               <span>{categoryProducts.length} Evaluated Models</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#18181B]">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#18181B] leading-tight">
               Best {category.pluralName} (2026 Buying Guide)
             </h1>
 
@@ -119,19 +121,27 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
               </button>
 
               <a
-                href="#buying-guide"
+                href="#how-to-choose"
                 className="bg-[#F4F4F5] hover:bg-[#E4E4E7] text-[#18181B] text-xs font-semibold px-4 py-2.5 rounded-lg flex items-center gap-1.5 transition-colors"
               >
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>Read Buying Criteria</span>
+                <span>How to Choose a {category.name}</span>
+              </a>
+
+              <a
+                href="#faq-section"
+                className="bg-[#F4F4F5] hover:bg-[#E4E4E7] text-[#18181B] text-xs font-semibold px-4 py-2.5 rounded-lg flex items-center gap-1.5 transition-colors"
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                <span>Frequently Asked Questions</span>
               </a>
             </div>
           </div>
 
-          <div className="lg:col-span-4 rounded-xl overflow-hidden border border-[#E4E4E7] h-52 bg-[#FAFAFA]">
+          <div className="lg:col-span-4 rounded-xl overflow-hidden border border-[#E4E4E7] h-56 bg-[#FAFAFA]">
             <img
               src={category.image}
-              alt={category.pluralName}
+              alt={`Best ${category.pluralName} (2026 Buying Guide) - Lab tested models`}
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -139,7 +149,46 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
         </div>
       </div>
 
-      {/* 2. Filter & Sort Toolbar */}
+      {/* 2. AEO / AI Overview Quick Answer Capsule (Direct, Snippet-Optimized) */}
+      {category.aeoDirectDefinition && (
+        <section aria-labelledby="aeo-overview-title" className="bg-[#FAFAFA] rounded-2xl border-2 border-[#18181B] p-6 sm:p-7 space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#18181B]" />
+            <h2 id="aeo-overview-title" className="text-xs font-bold uppercase tracking-wider text-[#18181B]">
+              Quick Answer: Choosing a {category.name} in 2026
+            </h2>
+          </div>
+          <p className="text-sm sm:text-base text-[#18181B] leading-relaxed font-medium">
+            {category.aeoDirectDefinition}
+          </p>
+          <div className="flex items-center gap-1.5 text-xs text-[#71717A] pt-1">
+            <Info className="w-3.5 h-3.5" />
+            <span>Independent testing standards updated for 2026 hardware benchmarks.</span>
+          </div>
+        </section>
+      )}
+
+      {/* 3. High-Intent Buyer Searches Strip */}
+      {category.highIntentKeywords && category.highIntentKeywords.length > 0 && (
+        <div className="bg-white rounded-xl border border-[#E4E4E7] p-4 flex flex-col sm:flex-row sm:items-center gap-3 text-xs">
+          <span className="font-bold text-[#18181B] whitespace-nowrap">
+            Popular 2026 Searches:
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {category.highIntentKeywords.map((kw) => (
+              <button
+                key={kw}
+                onClick={() => navigate({ type: 'finder', initialCategory: category.slug, initialQuery: kw })}
+                className="px-2.5 py-1 rounded bg-[#F4F4F5] hover:bg-[#E4E4E7] text-[#3F3F46] hover:text-[#18181B] transition-colors"
+              >
+                {kw}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 4. Filter & Sort Toolbar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E4E4E7] pb-4">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-xs font-bold text-[#71717A] uppercase tracking-wider mr-1">
@@ -188,11 +237,11 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
         </div>
       </div>
 
-      {/* 3. Product Catalog Grid */}
-      <div className="space-y-4">
+      {/* 5. Product Catalog Grid */}
+      <section className="space-y-4" aria-labelledby="catalog-heading">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-[#18181B]">
-            Recommended Models ({displayProducts.length})
+          <h2 id="catalog-heading" className="text-xl font-bold text-[#18181B]">
+            Recommended {category.pluralName} ({displayProducts.length})
           </h2>
           <span className="text-xs text-[#71717A]">
             Independent laboratory data & real retailer pricing
@@ -209,11 +258,11 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
                 className="bg-white rounded-2xl border border-[#E4E4E7] hover:border-[#A1A1AA] hover:shadow-md transition-all flex flex-col justify-between overflow-hidden"
               >
                 <div>
-                  {/* Image Slot */}
+                  {/* Image Slot with Descriptive Alt Text */}
                   <div className="h-48 w-full bg-[#F9F9F8] border-b border-[#E4E4E7] relative">
                     <img
                       src={prod.image}
-                      alt={prod.name}
+                      alt={`${prod.name} - ${prod.brand} ${category.name} verified specifications`}
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
@@ -304,16 +353,55 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
             );
           })}
         </div>
-      </div>
+      </section>
 
-      {/* 4. In-Depth Category Buying Guide Section */}
-      <div id="buying-guide" className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 space-y-6">
+      {/* 6. Step-by-Step "How to Choose" Guide (Matches Schema.org HowTo Markup) */}
+      {category.howToSteps && category.howToSteps.length > 0 && (
+        <section id="how-to-choose" className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 space-y-6">
+          <div className="border-b border-[#E4E4E7] pb-4">
+            <div className="text-xs font-bold uppercase tracking-wider text-[#71717A] mb-1">
+              Step-by-Step Decision Guide
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-[#18181B]">
+              How to Choose the Right {category.name} in 2026
+            </h2>
+            <p className="text-sm text-[#52525B] mt-1">
+              Follow our testing-backed 4-step framework to avoid overpaying for unnecessary features.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {category.howToSteps.map((step, idx) => (
+              <div
+                key={idx}
+                id={`step-${idx + 1}`}
+                className="bg-[#FAFAFA] p-5 rounded-xl border border-[#F4F4F5] space-y-2"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[#18181B] text-white flex items-center justify-center text-xs font-bold">
+                    {idx + 1}
+                  </span>
+                  <h3 className="font-bold text-sm text-[#18181B]">
+                    {step.name}
+                  </h3>
+                </div>
+                <p className="text-xs text-[#52525B] leading-relaxed pl-8">
+                  {step.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 7. Key Criteria, What to Look For & Mistakes */}
+      <section className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 space-y-6">
         <div className="border-b border-[#E4E4E7] pb-4">
           <div className="text-xs font-bold uppercase tracking-wider text-[#71717A] mb-1">
-            Buyer Education
+            Buyer Education & Testing Standards
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-[#18181B]">
-            How to Choose the Right {category.name} in 2026
+            Testing Standards for {category.pluralName}
           </h2>
           <p className="text-sm text-[#52525B] mt-1">
             {category.buyingGuideSummary}
@@ -324,7 +412,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
           <div className="space-y-3 bg-[#FAFAFA] p-5 rounded-xl border border-[#F4F4F5]">
             <h3 className="font-bold text-sm text-[#18181B] uppercase tracking-wider flex items-center gap-2">
               <Check className="w-4 h-4 text-[#16A34A]" />
-              <span>What to Look For</span>
+              <span>Critical Features to Require</span>
             </h3>
             <ul className="space-y-2 text-xs text-[#3F3F46]">
               {category.topFeaturesToLookFor.map((feat, i) => (
@@ -339,7 +427,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
           <div className="space-y-3 bg-[#FAFAFA] p-5 rounded-xl border border-[#F4F4F5]">
             <h3 className="font-bold text-sm text-[#18181B] uppercase tracking-wider flex items-center gap-2">
               <span className="w-4 h-4 rounded-full bg-[#DC2626] text-white flex items-center justify-center text-[10px] font-bold">!</span>
-              <span>Common Mistakes to Avoid</span>
+              <span>Costly Traps to Avoid</span>
             </h3>
             <ul className="space-y-2 text-xs text-[#52525B]">
               {category.commonMistakes.map((mistake, i) => (
@@ -351,18 +439,21 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
             </ul>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* 5. Frequently Asked Questions (FAQ Accordion with SEO Schema) */}
+      {/* 8. Frequently Asked Questions (Structured Accordion with FAQPage Schema) */}
       {category.faqs && category.faqs.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 space-y-6">
+        <section id="faq-section" className="bg-white rounded-2xl border border-[#E4E4E7] p-6 sm:p-8 space-y-6">
           <div>
             <div className="text-xs font-bold uppercase tracking-wider text-[#71717A] mb-1">
               Frequently Asked Questions
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-[#18181B]">
-              {category.pluralName} FAQs
+              Frequently Asked Questions About {category.pluralName}
             </h2>
+            <p className="text-xs text-[#71717A] mt-1">
+              Direct answers to high-intent buyer questions based on laboratory measurements.
+            </p>
           </div>
 
           <div className="divide-y divide-[#E4E4E7]">
@@ -373,18 +464,18 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
                 <div key={idx} className="py-4">
                   <button
                     onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                    className="w-full text-left flex items-center justify-between gap-4 font-semibold text-sm text-[#18181B]"
+                    className="w-full text-left flex items-center justify-between gap-4 font-semibold text-sm sm:text-base text-[#18181B]"
                   >
                     <span>{faq.question}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-[#71717A] transition-transform ${
+                      className={`w-4 h-4 text-[#71717A] shrink-0 transition-transform ${
                         isOpen ? 'rotate-180 text-[#18181B]' : ''
                       }`}
                     />
                   </button>
 
                   {isOpen && (
-                    <p className="mt-2.5 text-xs text-[#52525B] leading-relaxed pr-8">
+                    <p className="mt-2.5 text-xs sm:text-sm text-[#52525B] leading-relaxed pr-8">
                       {faq.answer}
                     </p>
                   )}
@@ -392,15 +483,15 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
               );
             })}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* 6. Related Categories */}
+      {/* 9. Related Categories */}
       {category.relatedCategorySlugs && category.relatedCategorySlugs.length > 0 && (
-        <div className="pt-4 border-t border-[#E4E4E7]">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-[#71717A] mb-3">
+        <section className="pt-4 border-t border-[#E4E4E7]">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-[#71717A] mb-3">
             Related Product Categories
-          </h3>
+          </h2>
           <div className="flex flex-wrap gap-2">
             {category.relatedCategorySlugs.map((relSlug) => (
               <button
@@ -412,7 +503,7 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ slug }) => {
               </button>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
     </div>

@@ -69,7 +69,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ slug }) =>
           <div className="rounded-2xl overflow-hidden border border-[#E4E4E7] bg-[#F9F9F8] h-80 sm:h-96 flex items-center justify-center relative">
             <img
               src={product.image}
-              alt={product.name}
+              alt={`${product.name} - ${product.brand} ${product.subcategory} verified laboratory test unit`}
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />

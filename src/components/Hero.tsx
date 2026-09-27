@@ -8,10 +8,10 @@ export const Hero: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
 
   const sampleQueries = [
-    'Best laptop for students',
+    'Best laptop for students 2026',
     'Best phone under $500',
     'Best microphone for YouTube',
-    'Best printer for home',
+    'Which laptop should I buy for college',
     'Best headphones for travel',
   ];
 
@@ -23,12 +23,14 @@ export const Hero: React.FC = () => {
     }
     const query = searchInput.trim().toLowerCase();
     // Route intelligently
-    if (query.includes('student') || query.includes('laptop')) {
+    if (query.includes('student') || query.includes('college') || query.includes('laptop')) {
       navigate({ type: 'finder', initialCategory: 'laptops', initialQuery: searchInput });
     } else if (query.includes('phone') || query.includes('camera')) {
       navigate({ type: 'finder', initialCategory: query.includes('camera') ? 'cameras' : 'smartphones', initialQuery: searchInput });
     } else if (query.includes('headphone') || query.includes('travel')) {
       navigate({ type: 'finder', initialCategory: 'headphones', initialQuery: searchInput });
+    } else if (query.includes('mic') || query.includes('youtube')) {
+      navigate({ type: 'guide', slug: 'best-microphone-for-youtube' });
     } else {
       navigate({ type: 'search', query: searchInput });
     }
@@ -36,7 +38,7 @@ export const Hero: React.FC = () => {
 
   const handleQueryClick = (q: string) => {
     setSearchInput(q);
-    if (q.includes('laptop for students')) {
+    if (q.includes('laptop for students') || q.includes('buy for college')) {
       navigate({ type: 'guide', slug: 'best-laptop-for-college-students' });
     } else if (q.includes('phone under $500')) {
       navigate({ type: 'finder', initialCategory: 'smartphones', initialQuery: 'under 500' });
@@ -136,7 +138,7 @@ export const Hero: React.FC = () => {
             <div className="relative rounded-2xl overflow-hidden border border-[#E4E4E7] shadow-sm bg-[#F4F4F5]">
               <img
                 src={heroImg}
-                alt="Editorial curation of tested laptops, audio equipment, and cameras"
+                alt="Editorial curation of tested laptops, smartphones, headphones, and cameras in 2026"
                 className="w-full h-[320px] sm:h-[400px] object-cover"
                 referrerPolicy="no-referrer"
               />

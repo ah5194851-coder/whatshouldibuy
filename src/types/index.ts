@@ -57,6 +57,9 @@ export interface Category {
   topFeaturesToLookFor: string[];
   commonMistakes: string[];
   buyingGuideSummary: string;
+  aeoDirectDefinition?: string;
+  howToSteps?: { name: string; text: string }[];
+  highIntentKeywords?: string[];
   faqs: { question: string; answer: string }[];
   relatedCategorySlugs: string[];
 }
@@ -73,6 +76,9 @@ export interface BuyingGuide {
   readTime: string;
   summary: string;
   methodology: string;
+  aeoTakeaway?: string;
+  howToSteps?: { name: string; text: string }[];
+  targetKeywords?: string[];
   topPickIds: {
     rankTitle: string;
     productId: string;
